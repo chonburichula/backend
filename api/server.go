@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"context"
@@ -14,12 +14,12 @@ type server struct {
 	router     *gin.Engine
 }
 
-func newServer(collection string) server {
-
+func NewServer(collection string) string {
+	return "Hello World"
 }
 
 func (server server) getOneCustomer(ctx *gin.Context) {
-	var req requestCustomer
+	var req customerRequest
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
@@ -37,7 +37,7 @@ func (server server) getOneCustomer(ctx *gin.Context) {
 }
 
 func (server server) listCustomer(ctx *gin.Context) {
-	var req listCustomer
+	var req listCustomerRequest
 	err := ctx.ShouldBindQuery(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
