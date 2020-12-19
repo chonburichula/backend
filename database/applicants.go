@@ -1,6 +1,6 @@
 package database
 
-type applicant struct {
+type Applicant struct {
 	Email             string `bson:"email" json:"email"`
 	Title             string `bson:"title" json:"title"`
 	Name              string `bson:"name" json:"name"`

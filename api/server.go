@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"database"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -38,6 +40,7 @@ func NewServer(database string, collection string) Server {
 	s.router.POST("/register", s.Register)
 	s.router.GET("/register/:id", s.GetOneCustomer)
 	s.router.GET("/register", s.ListCustomer)
+	s.router.POST("/test", s.registerapplicant)
 
 	return s
 }
@@ -98,4 +101,20 @@ func (server Server) Register(ctx *gin.Context) {
 
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}
+}
+
+func (server Server) registerapplicant(ctx *gin.Context) {
+	var req database.Applicant
+	err := ctx.ShouldBindJSON(&req)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	insertResult, err := server.collection.InsertOne(context.TODO(), req)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, insertResult)
+
 }
