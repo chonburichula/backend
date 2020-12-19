@@ -1,4 +1,4 @@
-package database
+package document
 
 type Applicant struct {
 	Email             string `bson:"email" json:"email"`
@@ -38,4 +38,8 @@ type Applicant struct {
 	Answer5           string `bson:"answer5" json:"answer5"`
 	Answer6           string `bson:"answer6" json:"answer6"`
 	Answer7           string `bson:"answer7" json:"answer7"`
+}
+
+func CreateNewApplicant() Applicant {
+	return Applicant{}
 }

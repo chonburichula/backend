@@ -37,6 +37,7 @@ type order struct {
 }
 
 func insert(c customer, collection *mongo.Collection) {
+
 	insertResult, err := collection.InsertOne(context.TODO(), c)
 	if err != nil {
 		log.Fatal(err)
