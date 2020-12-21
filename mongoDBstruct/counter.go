@@ -28,7 +28,7 @@ func connectToCounterCollection() (*mongo.Client, *mongo.Collection, error) {
 	return client, collection, err
 }
 
-func CreateNewCounter(sequenceName string, collection *mongo.Collection) (*mongo.InsertOneResult, error) {
+func CreateNewCounter(sequenceName string) (*mongo.InsertOneResult, error) {
 	var insertResult *mongo.InsertOneResult
 	client, collection, err := connectToApplicantCollection()
 	if err != nil {
@@ -47,11 +47,13 @@ func CreateNewCounter(sequenceName string, collection *mongo.Collection) (*mongo
 	return insertResult, err
 }
 
-func GetNextApplicantID(collection *mongo.Collection) int {
+func GetNextApplicantID() int {
+	client, collection, _ := connectToApplicantCollection()
 	filter := bson.D{{Key: "_id", Value: "id"}}
 	//option := options.FindOneAndUpdate()
 	update := bson.D{{Key: "$inc", Value: bson.D{{Key: "sequence_value", Value: 1}}}}
 	var result counter
 	_ = collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&result)
+	_ = disConnectToDatbase(client)
 	return result.SequenceValue
 }

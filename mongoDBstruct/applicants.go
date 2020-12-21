@@ -85,7 +85,7 @@ func Insert(applicant Applicant, collection *mongo.Collection) (*mongo.InsertOne
 	return insertResult, err
 }
 
-func UpdateGraded(applicant Applicant) (*mongo.UpdateResult, error) {
+func (applicant Applicant) UpdateGraded() (*mongo.UpdateResult, error) {
 	var updateResult *mongo.UpdateResult
 	client, collection, err := connectToApplicantCollection()
 	if err != nil {
