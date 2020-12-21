@@ -1,4 +1,4 @@
-package mongoDBstruct
+package mongostruct
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 
 type counter struct {
 	ID            string `bson:"_id"`
-	SequenceValue int    `bson:"sequence_value"`
+	SequenceValue int32  `bson:"sequence_value"`
 }
 
 func connectToCounterCollection() (*mongo.Client, *mongo.Collection, error) {
@@ -28,9 +28,10 @@ func connectToCounterCollection() (*mongo.Client, *mongo.Collection, error) {
 	return client, collection, err
 }
 
+//CreateNewCounter is ...
 func CreateNewCounter(sequenceName string) (*mongo.InsertOneResult, error) {
 	var insertResult *mongo.InsertOneResult
-	client, collection, err := connectToApplicantCollection()
+	client, collection, err := connectToCounterCollection()
 	if err != nil {
 		return insertResult, err
 	}
@@ -47,13 +48,18 @@ func CreateNewCounter(sequenceName string) (*mongo.InsertOneResult, error) {
 	return insertResult, err
 }
 
-func GetNextApplicantID() int {
-	client, collection, _ := connectToApplicantCollection()
+//GetNextApplicantID is ...
+func GetNextApplicantID() int32 {
+	client, collection, _ := connectToCounterCollection()
 	filter := bson.D{{Key: "_id", Value: "id"}}
-	//option := options.FindOneAndUpdate()
 	update := bson.D{{Key: "$inc", Value: bson.D{{Key: "sequence_value", Value: 1}}}}
+
 	var result counter
-	_ = collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&result)
+	err := collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&result)
+	if err != nil {
+		CreateNewCounter("id")
+		collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&result)
+	}
 	_ = disConnectToDatbase(client)
-	return result.SequenceValue
+	return result.SequenceValue + 1
 }

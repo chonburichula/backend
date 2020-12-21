@@ -1,4 +1,4 @@
-module mongoDBstruct
+module mongostruct
 
 go 1.15
 
