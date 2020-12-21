@@ -1,11 +1,9 @@
 package main
 
-import (
-	"api"
-)
+import "api"
 
 func main() {
-	a := api.NewServer("ordersystem", "customer")
+	a := api.NewServer("test", "customer")
 	a.Run()
 
 }
