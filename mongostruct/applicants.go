@@ -9,8 +9,8 @@ import (
 )
 
 type Applicant struct {
-	ID                int32  `bson:"_id" json:"_id" `
-	Email             string `bson:"email" json:"email" validate:"email,required"`
+	ID                int32  `bson:"_id" json:"_id"`
+	Email             string `bson:"email" json:"email" binding:"required,email"`
 	Title             string `bson:"title" json:"title" binding:"required"`
 	Name              string `bson:"name" json:"name" binding:"required"`
 	Surname           string `bson:"surname" json:"surname" binding:"required"`
@@ -47,7 +47,7 @@ type Applicant struct {
 	Answer5           string `bson:"answer5" json:"answer5" binding:"required"`
 	Answer6           string `bson:"answer6" json:"answer6" binding:"required"`
 	Answer7           string `bson:"answer7" json:"answer7" binding:"required"`
-	Status            string `bson:"status" json:"status" binding:"requoired, `
+	Status            string `bson:"status" json:"status" binding:"required, `
 	Score             int    `bson:"score" json:"score"`
 }
 
@@ -96,8 +96,24 @@ func (applicant Applicant) UpdateGraded() (*mongo.UpdateResult, error) {
 	if err != nil {
 		return updateResult, err
 	}
-	filter := bson.D{{Key: "id", Value: applicant.ID}}
+	filter := bson.D{{Key: "_id", Value: applicant.ID}}
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "status", Value: "graded"}}}}
+	updateResult, err = collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		return updateResult, err
+	}
+	err = disConnectToDatbase(client)
+	return updateResult, err
+}
+
+func (applicant Applicant) UpdateScore(newScore int32) (*mongo.UpdateResult, error) {
+	var updateResult *mongo.UpdateResult
+	client, collection, err := connectToApplicantCollection()
+	if err != nil {
+		return updateResult, err
+	}
+	filter := bson.D{{Key: "_id", Value: applicant.ID}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "score", Value: newScore}}}}
 	updateResult, err = collection.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		return updateResult, err
