@@ -47,8 +47,12 @@ type Applicant struct {
 	Answer5           string `bson:"answer5" json:"answer5"`
 	Answer6           string `bson:"answer6" json:"answer6"`
 	Answer7           string `bson:"answer7" json:"answer7"`
-	Status            string `bson:"status" json:"status"`
+	Status            bool   `bson:"status" json:"status"`
 	Score             int    `bson:"score" json:"score"`
+}
+type grading struct {
+	ID     int32 `bson:"_id" json:"_id"`
+	Status bool  `bson:"status" json:"status"`
 }
 
 func connectToApplicantCollection() (*mongo.Client, *mongo.Collection, error) {
@@ -74,7 +78,7 @@ func disConnectToDatbase(client *mongo.Client) error {
 //Insert is ...
 func Insert(applicant Applicant) (*mongo.InsertOneResult, error) {
 	applicant.ID = GetNextApplicantID()
-	applicant.Status = "ungraded"
+	applicant.Status = false
 	applicant.Score = 0
 	var insertResult *mongo.InsertOneResult
 	client, collection, err := connectToApplicantCollection()
@@ -128,7 +132,7 @@ func ShowUnGradedApplicant() ([]Applicant, error) {
 	if err != nil {
 		return applicants, err
 	}
-	filter := bson.D{{Key: "status", Value: "ungraded"}}
+	filter := bson.D{{Key: "status", Value: false}}
 	cur, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		return applicants, err
@@ -156,7 +160,7 @@ func ShowGradedApplicant() ([]Applicant, error) {
 	if err != nil {
 		return applicants, err
 	}
-	filter := bson.D{{Key: "status", Value: "graded"}}
+	filter := bson.D{{Key: "status", Value: true}}
 	cur, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		return applicants, err
@@ -192,6 +196,35 @@ func SearchApplicantByName(searchName string) ([]Applicant, error) {
 	defer cur.Close(context.TODO())
 	for cur.Next(context.TODO()) {
 		var temp Applicant
+		err = cur.Decode(&temp)
+		if err != nil {
+			return applicants, err
+		}
+		applicants = append(applicants, temp)
+	}
+	err = cur.Err()
+	if err != nil {
+		return applicants, err
+	}
+	err = disConnectToDatbase(client)
+	return applicants, err
+}
+
+func ShowUngraded() ([]grading, error) {
+	var applicants []grading
+	client, collection, err := connectToApplicantCollection()
+	if err != nil {
+		return applicants, err
+	}
+	filter := bson.D{{Key: "status", Value: false}}
+	option := options.Find().SetProjection(bson.D{{"_id", 1}, {"status", 1}})
+	cur, err := collection.Find(context.TODO(), filter, option)
+	if err != nil {
+		return applicants, err
+	}
+	defer cur.Close(context.TODO())
+	for cur.Next(context.TODO()) {
+		var temp grading
 		err = cur.Decode(&temp)
 		if err != nil {
 			return applicants, err
