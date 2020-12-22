@@ -10,44 +10,44 @@ import (
 
 type Applicant struct {
 	ID                int32  `bson:"_id" json:"_id"`
-	Email             string `bson:"email" json:"email" binding:"required,email"`
-	Title             string `bson:"title" json:"title" binding:"required"`
-	Name              string `bson:"name" json:"name" binding:"required"`
-	Surname           string `bson:"surname" json:"surname" binding:"required"`
-	Nickname          string `bson:"nickname" json:"nickname" binding:"required"`
-	Birthdate         string `bson:"birthdate" json:"birthdate" binding:"required"`
-	Age               int32  `bson:"age" json:"age" binding:"required,gte=1"`
-	BloodType         string `bson:"bloodtype" json:"bloodtype" binding:`
-	Religion          string `bson:"religion" json:"religion" binding:"required"`
-	Address           string `bson:"address" json:"address" binding:"required"`
-	PhoneNumber       string `bson:"phonenumber" json:"phonenumber" binding:"required"`
-	LineID            string `bson:"lineid" json:"lineid" binding:"required"`
-	Facebook          string `bson:"facebook" json:"facebook" binding:"required"`
-	Class             string `bson:"class" json:"class" binding:"required"`
-	Major             string `bson:"major" json:"major" binding:"required"`
-	School            string `bson:"school" json:"school" binding:"required"`
-	Disease           string `bson:"disease" json:"disease" binding:"required"`
-	Medicine          string `bson:"medicine" json:"medicine" binding:"required"`
-	FoodLimitation    string `bson:"foodlimitation" json:"foodlimitation" binding:"required"`
-	ClothSize         string `bson:"clothsize" json:"clothsize" binding:"required"`
-	FatherName        string `bson:"fathername" json:"fathername" binding:"required"`
-	FatherPhoneNumber string `bson:"fatherphonenumber" json:"fatherphonenumber" binding:"required"`
-	MotherName        string `bson:"mothername" json:"mothername" binding:"required"`
-	MotherPhoneNumber string `bson:"motherphonenumber" json:"motherphonenumber" binding:"required"`
+	Email             string `bson:"email" json:"email" `
+	Title             string `bson:"title" json:"title" `
+	Name              string `bson:"name" json:"name" `
+	Surname           string `bson:"surname" json:"surname" `
+	Nickname          string `bson:"nickname" json:"nickname" `
+	Birthdate         string `bson:"birthdate" json:"birthdate" `
+	Age               int32  `bson:"age" json:"age" `
+	BloodType         string `bson:"bloodtype" json:"bloodtype" `
+	Religion          string `bson:"religion" json:"religion" `
+	Address           string `bson:"address" json:"address" `
+	PhoneNumber       string `bson:"phonenumber" json:"phonenumber" `
+	LineID            string `bson:"lineid" json:"lineid" `
+	Facebook          string `bson:"facebook" json:"facebook" `
+	Class             string `bson:"class" json:"class"`
+	Major             string `bson:"major" json:"major"`
+	School            string `bson:"school" json:"school"`
+	Disease           string `bson:"disease" json:"disease"`
+	Medicine          string `bson:"medicine" json:"medicine"`
+	FoodLimitation    string `bson:"foodlimitation" json:"foodlimitation"`
+	ClothSize         string `bson:"clothsize" json:"clothsize"`
+	FatherName        string `bson:"fathername" json:"fathername"`
+	FatherPhoneNumber string `bson:"fatherphonenumber" json:"fatherphonenumber"`
+	MotherName        string `bson:"mothername" json:"mothername"`
+	MotherPhoneNumber string `bson:"motherphonenumber" json:"motherphonenumber"`
 	ParentName        string `bson:"parentname" json:"parentname" `
 	ParentType        string `bson:"parenttype" json:"parenttype"`
 	ParentPhoneNumber string `bson:"parentphonenumber" json:"parentphonenumber"`
-	GradingAnswer1    string `bson:"gradinganswer1" json:"gradinganswer1" binding:"required"`
-	GradingAnswer2    string `bson:"gradinganswer2" json:"gradinganswer2" binding:"required"`
-	GradingAnswer3    string `bson:"gradinganswer3" json:"gradinganswer3" binding:"required"`
-	Answer1           string `bson:"answer1" json:"answer1" binding:"required"`
-	Answer2           string `bson:"answer2" json:"answer2" binding:"required"`
-	Answer3           string `bson:"answer3" json:"answer3" binding:"required"`
-	Answer4           string `bson:"answer4" json:"answer4" binding:"required"`
-	Answer5           string `bson:"answer5" json:"answer5" binding:"required"`
-	Answer6           string `bson:"answer6" json:"answer6" binding:"required"`
-	Answer7           string `bson:"answer7" json:"answer7" binding:"required"`
-	Status            string `bson:"status" json:"status" binding:"required, `
+	GradingAnswer1    string `bson:"gradinganswer1" json:"gradinganswer1"`
+	GradingAnswer2    string `bson:"gradinganswer2" json:"gradinganswer2"`
+	GradingAnswer3    string `bson:"gradinganswer3" json:"gradinganswer3"`
+	Answer1           string `bson:"answer1" json:"answer1"`
+	Answer2           string `bson:"answer2" json:"answer2"`
+	Answer3           string `bson:"answer3" json:"answer3"`
+	Answer4           string `bson:"answer4" json:"answer4"`
+	Answer5           string `bson:"answer5" json:"answer5"`
+	Answer6           string `bson:"answer6" json:"answer6"`
+	Answer7           string `bson:"answer7" json:"answer7"`
+	Status            string `bson:"status" json:"status"`
 	Score             int    `bson:"score" json:"score"`
 }
 
