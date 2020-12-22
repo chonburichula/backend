@@ -17,6 +17,7 @@ func NewServer() Server {
 	r := gin.Default()
 	s := Server{router: r}
 	s.router.POST("/register", s.register)
+	s.router.GET("/listaccount/:status", s.showListApplicant)
 	//s.router.GET("/register/:id", s.getOneCustomer)
 	//s.router.GET("/register", s.listCustomer)
 	return s
@@ -25,6 +26,29 @@ func NewServer() Server {
 //Run is ...
 func (server Server) Run() {
 	server.router.Run()
+}
+
+func (server Server) showListApplicant(ctx *gin.Context) {
+	req := ctx.Params.ByName("status")
+	// if err != nil {
+	// 	ctx.JSON(http.StatusBadRequest, errorResponse(err))
+	// 	return
+	// }
+	if req == "ungraded" {
+		applicant, err := mongostruct.ShowUnGradedApplicant()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusOK, applicant)
+		return
+	}
+	applicant, err := mongostruct.ShowGradedApplicant()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, applicant)
 }
 
 // func (server Server) getOneCustomer(ctx *gin.Context) {

@@ -1,7 +1,7 @@
 package api
 
-type customerRequest struct {
-	CustomerID int32 `uri:"id"`
+type listApplicantRequest struct {
+	status string `uri:"status"`
 }
 
 type listCustomerRequest struct {
