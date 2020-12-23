@@ -20,10 +20,11 @@ func NewServer(database string, redis *redis.Client) Server {
 	r := gin.Default()
 
 	r.POST("/register", register)
+	r.POST("/login", login)
 	staff := r.Group("/staff")
 	staff.Use(middleware.TokenAuthMiddleware())
-	staff.GET("/ungraded", getUnGraded)
-	staff.GET("/graded", getGraded)
+	staff.POST("/ungraded", getUnGraded)
+	staff.POST("/graded", getGraded)
 	staff.POST("/update", update)
 	server := Server{r, database, redis}
 	return server
