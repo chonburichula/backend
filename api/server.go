@@ -1,31 +1,36 @@
 package api
 
 import (
+	"middleware"
 	"mongostruct"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v7"
 )
 
-//Server is ...
 type Server struct {
-	router *gin.Engine
+	rounter  *gin.Engine
+	database string
+	redis    *redis.Client
 }
 
 //NewServer is function for initialize server
-func NewServer() Server {
+func NewServer(database string, redis *redis.Client) Server {
 	r := gin.Default()
-	s := Server{router: r}
-	s.router.POST("/register", register)
-	s.router.GET("/ungraded", getUnGraded)
-	s.router.GET("/graded", getGraded)
-	s.router.POST("/update", update)
-	return s
+
+	r.POST("/register", register)
+	staff := r.Group("/staff")
+	staff.Use(middleware.TokenAuthMiddleware())
+	staff.GET("/ungraded", getUnGraded)
+	staff.GET("/graded", getGraded)
+	staff.POST("/update", update)
+	server := Server{r, database, redis}
+	return server
 }
 
-//Run is ...
 func (server Server) Run() {
-	server.router.Run()
+	server.rounter.Run()
 }
 
 func register(ctx *gin.Context) {
