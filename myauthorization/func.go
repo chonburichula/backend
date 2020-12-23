@@ -15,6 +15,21 @@ import (
 
 var client *redis.Client
 
+func init() {
+	//Initializing redis
+	dsn := os.Getenv("REDIS_DSN")
+	if len(dsn) == 0 {
+		dsn = "13.229.89.142:6379"
+	}
+	client = redis.NewClient(&redis.Options{
+		Addr: dsn, //redis port
+	})
+	_, err := client.Ping().Result()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func CreateToken(userid uint64) (*TokenDetails, error) {
 	td := &TokenDetails{}
 	td.AtExpires = time.Now().Add(time.Minute * 15).Unix()

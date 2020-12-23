@@ -3,20 +3,30 @@ package api
 import (
 	"middleware"
 	"mongostruct"
+	"myauthorization"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v7"
 )
 
 type Server struct {
 	rounter  *gin.Engine
 	database string
-	redis    *redis.Client
+}
+type User struct {
+	ID       uint64 `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+var user = User{
+	ID:       1,
+	Username: "username",
+	Password: "password",
 }
 
 //NewServer is function for initialize server
-func NewServer(database string, redis *redis.Client) Server {
+func NewServer(database string) Server {
 	r := gin.Default()
 
 	r.POST("/register", register)
@@ -26,12 +36,12 @@ func NewServer(database string, redis *redis.Client) Server {
 	staff.POST("/ungraded", getUnGraded)
 	staff.POST("/graded", getGraded)
 	staff.POST("/update", update)
-	server := Server{r, database, redis}
+	server := Server{rounter: r, database: database}
 	return server
 }
 
-func (server Server) Run() {
-	server.rounter.Run()
+func (server Server) Run(addr string) {
+	server.rounter.Run(addr)
 }
 
 func register(ctx *gin.Context) {
@@ -47,6 +57,33 @@ func register(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, insertResult)
+}
+
+func login(c *gin.Context) {
+	var u User
+	if err := c.ShouldBindJSON(&u); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
+		return
+	}
+	//compare the user from the request, with the one we defined:
+	if user.Username != u.Username || user.Password != u.Password {
+		c.JSON(http.StatusUnauthorized, "Please provide valid login details")
+		return
+	}
+	ts, err := myauthorization.CreateToken(user.ID)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return
+	}
+	saveErr := myauthorization.CreateAuth(user.ID, ts)
+	if saveErr != nil {
+		c.JSON(http.StatusUnprocessableEntity, saveErr.Error())
+	}
+	tokens := map[string]string{
+		"access_token":  ts.AccessToken,
+		"refresh_token": ts.RefreshToken,
+	}
+	c.JSON(http.StatusOK, tokens)
 }
 
 func errorResponse(err error) gin.H {
