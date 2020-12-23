@@ -2,6 +2,7 @@ package myauthorization
 
 import (
 	"fmt"
+
 	"net/http"
 	"os"
 	"strconv"
@@ -9,18 +10,14 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis"
 	"github.com/twinj/uuid"
 )
 
-var client *redis.Client
-
-func init() {
+func connectToRedis() *redis.Client {
 	//Initializing redis
-	dsn := os.Getenv("REDIS_DSN")
-	if len(dsn) == 0 {
-		dsn = "13.229.89.142:6379"
-	}
+	var client *redis.Client
+	dsn := "localhost:6379"
 	client = redis.NewClient(&redis.Options{
 		Addr: dsn, //redis port
 	})
@@ -28,6 +25,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	return client
 }
 
 func CreateToken(userid uint64) (*TokenDetails, error) {
@@ -128,7 +126,7 @@ func CreateAuth(userid uint64, td *TokenDetails) error {
 	at := time.Unix(td.AtExpires, 0) //converting Unix to UTC(to Time object)
 	rt := time.Unix(td.RtExpires, 0)
 	now := time.Now()
-
+	client := connectToRedis()
 	errAccess := client.Set(td.AccessUuid, strconv.Itoa(int(userid)), at.Sub(now)).Err()
 	if errAccess != nil {
 		return errAccess
@@ -137,11 +135,20 @@ func CreateAuth(userid uint64, td *TokenDetails) error {
 	if errRefresh != nil {
 		return errRefresh
 	}
+	err := client.Close()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func FetchAuth(authD *AccessDetails) (uint64, error) {
+	client := connectToRedis()
 	userid, err := client.Get(authD.AccessUuid).Result()
+	if err != nil {
+		return 0, err
+	}
+	err = client.Close()
 	if err != nil {
 		return 0, err
 	}
@@ -150,7 +157,11 @@ func FetchAuth(authD *AccessDetails) (uint64, error) {
 }
 
 func DeleteAuth(givenUuid string) (int64, error) {
+	client := connectToRedis()
 	deleted, err := client.Del(givenUuid).Result()
+	if err != nil {
+		return 0, err
+	}
 	if err != nil {
 		return 0, err
 	}

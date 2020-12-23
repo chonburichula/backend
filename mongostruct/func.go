@@ -10,7 +10,7 @@ import (
 
 func connectToApplicantCollection() (*mongo.Client, *mongo.Collection, error) {
 	var collection *mongo.Collection
-	clientOptions := options.Client().ApplyURI("mongodb://13.229.89.142:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://54.255.211.157:27017")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return nil, nil, err
@@ -25,7 +25,7 @@ func connectToApplicantCollection() (*mongo.Client, *mongo.Collection, error) {
 
 func connectToCounterCollection() (*mongo.Client, *mongo.Collection, error) {
 	var collection *mongo.Collection
-	clientOptions := options.Client().ApplyURI("mongodb://13.229.89.142:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://54.255.211.157:27017")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return nil, nil, err
