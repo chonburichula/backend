@@ -1,4 +1,4 @@
-module myauthorization
+module backend/myauthorization
 
 go 1.15
 

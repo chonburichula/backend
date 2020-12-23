@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"myauthorization"
+	"backend/myauthorization"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

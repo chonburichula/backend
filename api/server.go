@@ -1,9 +1,9 @@
 package api
 
 import (
-	"middleware"
-	"mongostruct"
-	"myauthorization"
+	"backend/middleware"
+	"backend/mongostruct"
+	"backend/myauthorization"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
