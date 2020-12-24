@@ -34,7 +34,7 @@ type Applicant struct {
 	Answer5           string `bson:"answer5" json:"answer5"`
 	Answer6           string `bson:"answer6" json:"answer6"`
 	Answer7           string `bson:"answer7" json:"answer7"`
-	Graded            bool   `bson:"status" json:"graded"`
+	Graded            bool   `bson:"graded" json:"graded"`
 	Score             int    `bson:"score" json:"score"`
 }
 
