@@ -27,6 +27,7 @@ type Applicant struct {
 	GradingAnswer1    string `bson:"gradinganswer1" json:"gradinganswer1"`
 	GradingAnswer2    string `bson:"gradinganswer2" json:"gradinganswer2"`
 	GradingAnswer3    string `bson:"gradinganswer3" json:"gradinganswer3"`
+	GradingAnswer4    string `bson:"gradinganswer4" json:"gradinganswer4"`
 	Answer1           string `bson:"answer1" json:"answer1"`
 	Answer2           string `bson:"answer2" json:"answer2"`
 	Answer3           string `bson:"answer3" json:"answer3"`
@@ -48,6 +49,7 @@ type ApplicantOnlyAnswer struct {
 	GradingAnswer1 string `bson:"gradinganswer1" json:"gradinganswer1"`
 	GradingAnswer2 string `bson:"gradinganswer2" json:"gradinganswer2"`
 	GradingAnswer3 string `bson:"gradinganswer3" json:"gradinganswer3"`
+	GradingAnswer4 string `bson:"gradinganswer4" json:"gradinganswer4"`
 	Answer1        string `bson:"answer1" json:"answer1"`
 	Answer2        string `bson:"answer2" json:"answer2"`
 	Answer3        string `bson:"answer3" json:"answer3"`

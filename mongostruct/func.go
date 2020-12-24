@@ -2,6 +2,7 @@ package mongostruct
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,6 +12,7 @@ import (
 func connectToApplicantCollection() (*mongo.Client, *mongo.Collection, error) {
 	var collection *mongo.Collection
 	clientOptions := options.Client().ApplyURI("mongodb://54.255.211.157:27017")
+	clientOptions.SetServerSelectionTimeout(5 * time.Second)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return nil, nil, err
@@ -26,6 +28,7 @@ func connectToApplicantCollection() (*mongo.Client, *mongo.Collection, error) {
 func connectToCounterCollection() (*mongo.Client, *mongo.Collection, error) {
 	var collection *mongo.Collection
 	clientOptions := options.Client().ApplyURI("mongodb://54.255.211.157:27017")
+	clientOptions.SetServerSelectionTimeout(5 * time.Second)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return nil, nil, err
@@ -228,6 +231,7 @@ func GetApplicantAnswer(applicantID int) (ApplicantOnlyAnswer, error) {
 		{Key: "gradinganswer1", Value: 1},
 		{Key: "gradinganswer2", Value: 1},
 		{Key: "gradinganswer3", Value: 1},
+		{Key: "gradinganswer4", Value: 1},
 		{Key: "answer1", Value: 1},
 		{Key: "answer2", Value: 1},
 		{Key: "answer3", Value: 1},

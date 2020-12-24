@@ -32,6 +32,7 @@ func NewServer(database string) Server {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://chulachon.com"}
 	r.Use(cors.New(config))
+	//r.Use(cors.Default())
 	r.POST("/register", register)
 	r.POST("/login", login)
 	staff := r.Group("/staff")
