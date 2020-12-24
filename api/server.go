@@ -6,6 +6,7 @@ import (
 	"backend/myauthorization"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +29,7 @@ var user = User{
 //NewServer is function for initialize server
 func NewServer(database string) Server {
 	r := gin.Default()
-
+	r.Use(cors.Default())
 	r.POST("/register", register)
 	r.POST("/login", login)
 	staff := r.Group("/staff")
