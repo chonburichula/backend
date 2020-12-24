@@ -29,7 +29,9 @@ var user = User{
 //NewServer is function for initialize server
 func NewServer(database string) Server {
 	r := gin.Default()
-	r.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://chulachon.com"}
+	r.Use(cors.New(config))
 	r.POST("/register", register)
 	r.POST("/login", login)
 	staff := r.Group("/staff")
