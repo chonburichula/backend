@@ -30,7 +30,7 @@ var user = User{
 func NewServer(database string) Server {
 	r := gin.Default()
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://chulachon.com", "http://www.chulachon.com"}
+	config.AllowOrigins = []string{"http://chulachon.com"}
 	r.Use(cors.New(config))
 	//r.Use(cors.Default())
 	r.POST("/register", register)
