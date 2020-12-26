@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend/api"
+	"github.com/chonburichula/backend/api"
 )
 
 func main() {
