@@ -1,11 +1,11 @@
 package api
 
 import (
-	"backend/middleware"
-	"backend/mongostruct"
-	"backend/myauthorization"
 	"net/http"
 
+	"github.com/chonburichula/backend/middleware"
+	"github.com/chonburichula/backend/mongostruct"
+	"github.com/chonburichula/backend/myauthorization"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

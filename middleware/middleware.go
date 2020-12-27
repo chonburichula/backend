@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"backend/myauthorization"
 	"net/http"
 
+	"github.com/chonburichula/backend/myauthorization"
 	"github.com/gin-gonic/gin"
 )
 
